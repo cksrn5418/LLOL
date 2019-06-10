@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:weightSum="12"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+    <TextView
+            android:id="@+id/freerow_title"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:text="타이틀"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1.5"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="3.5">
+        <TextView
+                android:id="@+id/freerow_name"
+                android:textColor="@color/BoldGray"
+                android:textSize="20sp"
+                android:text="이찬구"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+        <TextView
+                android:textSize="20sp"
+                android:text="   "
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+        <TextView
+                android:id="@+id/freerow_date"
+                android:textColor="@color/BoldGray"
+                android:textSize="20sp"
+                android:text="2019.04.23"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+    </LinearLayout>
+</LinearLayout>

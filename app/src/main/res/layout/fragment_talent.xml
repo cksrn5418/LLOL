@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".TalentFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+            android:orientation="vertical"
+            android:weightSum="20"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:weightSum="10"
+                android:layout_weight="2">
+            <EditText
+                    android:textAlignment="center"
+                    android:id="@+id/talent_search"
+                    android:hint="검색하세요"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="8"/>
+            <Button
+                    android:id="@+id/talent_searchbtn"
+                    android:backgroundTint="@color/BoldGray"
+                    android:textColor="@color/White"
+                    android:text="검 색"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"/>
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:weightSum="3"
+                android:layout_weight="1.5">
+            <Button
+                    android:id="@+id/talent_hobbybtn"
+                    android:textColor="@color/BoldGray"
+                    android:backgroundTint="@color/White"
+                    android:text="취미활동"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+            <Button
+                    android:id="@+id/talent_healthbtn"
+                    android:textColor="@color/BoldGray"
+                    android:backgroundTint="@color/White"
+                    android:text="건강 및 운동"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+            <Button
+                    android:id="@+id/talent_studybtn"
+                    android:textColor="@color/BoldGray"
+                    android:backgroundTint="@color/White"
+                    android:text="교육"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+        </LinearLayout>
+        <ListView
+                android:id="@+id/talent_listview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="16.5">
+        </ListView>
+    </LinearLayout>
+</FrameLayout>

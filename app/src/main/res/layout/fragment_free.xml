@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".FreeFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+                  android:weightSum="20" android:orientation="vertical">
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_height="0dp"
+                android:text="게시판에서 자유롭게 질문하고 이야기하세요"/>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.5">
+            <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1"></View>
+            <Button
+                    android:id="@+id/free_btn"
+                    android:background="@drawable/board"
+                    android:layout_width="60sp"
+                    android:layout_height="match_parent"/>
+            <TextView
+                    android:gravity="center|left"
+                    android:text="글 올리기"
+                    android:textSize="15sp"
+                    android:layout_width="70sp"
+                    android:layout_height="match_parent"/>
+        </LinearLayout>
+        <TextView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="0.5"/>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:weightSum="40"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="16.5">
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"/>
+            <ListView
+                    android:id="@+id/free_listview"
+                    android:layout_width="0dp"
+                    android:layout_weight="38"
+                    android:layout_height="match_parent">
+            </ListView>
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"/>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>
