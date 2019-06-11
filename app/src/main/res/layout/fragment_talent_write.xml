@@ -190,9 +190,8 @@
                             <ImageView
                                     android:src="@drawable/empty"
                                     android:id="@+id/talentwrite_img"
-                                    android:layout_weight="8"
                                     android:layout_width="match_parent"
-                                    android:layout_height="0dp"/>
+                                    android:layout_height="wrap_content"/>
                             <LinearLayout
                                     android:orientation="horizontal"
                                     android:layout_weight="2.5"

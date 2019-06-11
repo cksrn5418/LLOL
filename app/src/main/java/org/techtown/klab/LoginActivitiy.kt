@@ -24,6 +24,8 @@ import java.security.NoSuchAlgorithmException
 import android.content.pm.PackageManager
 import android.content.pm.PackageInfo
 import android.util.Base64
+import com.google.firebase.FirebaseApp
+import com.google.firebase.database.FirebaseDatabase
 
 
 class LoginActivitiy : AppCompatActivity() {
@@ -35,6 +37,10 @@ class LoginActivitiy : AppCompatActivity() {
         Init()
     }
     fun Init(){
+        var database = FirebaseDatabase.getInstance()
+        var myRef = database.getReference("message")
+        myRef.setValue("Hello, World!")
+
         supportActionBar!!.hide()
         var callback = SessionCallback(this)
         Session.getCurrentSession().addCallback(callback)
