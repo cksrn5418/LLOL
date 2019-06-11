@@ -19,6 +19,11 @@ import com.kakao.util.exception.KakaoException
 import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+import android.content.pm.PackageManager
+import android.content.pm.PackageInfo
+import android.util.Base64
 
 
 class LoginActivitiy : AppCompatActivity() {
@@ -26,6 +31,7 @@ class LoginActivitiy : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
         Init()
     }
     fun Init(){

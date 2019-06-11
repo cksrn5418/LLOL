@@ -13,4 +13,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="kakao_app_key">2e236e244dac7809134e52b4b87ddd2d</string>
+    <string name="google_app_key">AIzaSyAibLXOt2-fW-gJmUD3qYWwToGNy_HvzQM</string>
+    <string name="prompt1">카테고리</string>
+    <string name="prompt2">모집인원</string>
 </resources>

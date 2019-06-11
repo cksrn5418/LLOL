@@ -15,7 +15,7 @@ import android.widget.Button
 import kotlinx.android.synthetic.main.custom_bar.view.*
 
 
-class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionListener, TalentFragment.OnFragmentInteractionListener, FreeFragment.OnFragmentInteractionListener, FreeWriteFragment.OnFragmentInteractionListener, FreeReadFragment.OnFragmentInteractionListener, MypageFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionListener, TalentWriteFragment.OnFragmentInteractionListener, TalentFragment.OnFragmentInteractionListener, FreeFragment.OnFragmentInteractionListener, FreeWriteFragment.OnFragmentInteractionListener, FreeReadFragment.OnFragmentInteractionListener, MypageFragment.OnFragmentInteractionListener {
 
     lateinit var builder:AlertDialog.Builder
 
@@ -77,6 +77,9 @@ class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionList
     }
 
     fun Init(){
+        main_write.setOnClickListener{
+            replaceFragment(TalentWriteFragment())
+        }
         actionbar = this.supportActionBar!!
         actionbar.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
         actionbar.setCustomView(R.layout.custom_bar)
@@ -93,7 +96,6 @@ class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionList
         builder.setTitle("도움말")
         builder.setMessage("추천 재능 목록이 나옵니다!!")
         builder.setPositiveButton("확인") { dialog, which ->
-
         }
     }
 }

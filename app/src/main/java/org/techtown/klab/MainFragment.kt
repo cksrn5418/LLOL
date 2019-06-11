@@ -63,11 +63,8 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
 //        actionbar!!.title = "홈"
-        var talent_list:ArrayList<MyTalent> = ArrayList()
-        talent_list.add(MyTalent(100, "이찬구","재능싸게팔아요^^", 5, "테스트중입니닿ㅎㅎㅎㅎㅎㅎㅎㅎ"))
-        talent_list.add(MyTalent(100, "이주형", "재능비싸게팔아요^^", 6, "이찬구입니당ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ"))
-        talent_list.add(MyTalent(100, "백재민", "재능안팔아요^^", 4, "귀찮습니다ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ"))
-        var adapter = MyTalentAdapter(context!!, R.layout.talent_row, talent_list)
+
+        var adapter = MyTalentAdapter(context!!, R.layout.talent_row, GlobalApplication.recommend_list)
         main_listview.adapter = adapter
         var spinnerArray = ArrayList<String>()
         spinnerArray.add("인기순")
