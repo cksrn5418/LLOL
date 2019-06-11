@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.app.AlertDialog
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_register.*
 
 class Register : AppCompatActivity() {
@@ -22,7 +23,7 @@ class Register : AppCompatActivity() {
             age.add(i.toString())
         register_agespinner.adapter = ArrayAdapter<String>(applicationContext, R.layout.support_simple_spinner_dropdown_item, age)
         register_agespinner.gravity = Spinner.TEXT_ALIGNMENT_CENTER
-        register_image.setImageBitmap(GlobalApplication.user.profile)
+        register_image.setImageBitmap(GlobalApplication.String_to_Bitmap(GlobalApplication.user.profile))
         register_name.text = GlobalApplication.user.nickname
 
         register_radiogroup.setOnCheckedChangeListener { group, checkedId ->
@@ -30,17 +31,17 @@ class Register : AppCompatActivity() {
                 R.id.register_hobby -> {
                     register_health.isChecked = false
                     register_study.isChecked = false
-                    GlobalApplication.user.flag = 1
+                    GlobalApplication.user.flag = 1.toString()
                 }
                 R.id.register_health -> {
                     register_hobby.isChecked = false
                     register_study.isChecked = false
-                    GlobalApplication.user.flag = 2
+                    GlobalApplication.user.flag = 2.toString()
                 }
                 R.id.register_study -> {
                     register_hobby.isChecked = false
                     register_health.isChecked = false
-                    GlobalApplication.user.flag = 3
+                    GlobalApplication.user.flag = 3.toString()
                 }
             }
         }
@@ -61,6 +62,19 @@ class Register : AppCompatActivity() {
                         GlobalApplication.user.age = register_agespinner.selectedItem.toString()
                         GlobalApplication.user.phonenum = register_phonenum.text.toString()
                         dialog.dismiss()
+
+                        var database = FirebaseDatabase.getInstance()
+                        var myRef = database.getReference("DB/Users")
+
+                        val user = User(GlobalApplication.user.id,
+                            GlobalApplication.user.nickname,
+                            GlobalApplication.user.profile,
+                            GlobalApplication.user.phonenum,
+                            GlobalApplication.user.age,
+                            GlobalApplication.user.flag
+                        )
+                        myRef.child("users").child(GlobalApplication.user.id).setValue(user)
+
                         val nextIntent = Intent(this, MainActivity::class.java)
                         startActivity(nextIntent)
                     }

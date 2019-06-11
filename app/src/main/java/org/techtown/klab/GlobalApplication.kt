@@ -1,7 +1,12 @@
 package org.techtown.klab
 
+import android.annotation.SuppressLint
 import android.app.Application
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import com.kakao.auth.KakaoSDK
+import java.io.ByteArrayOutputStream
+import java.util.*
 
 class GlobalApplication : Application() {
     companion object {
@@ -13,6 +18,20 @@ class GlobalApplication : Application() {
         var recommend_list:ArrayList<MyTalent> = ArrayList()
         var free_index:Int = -1
         lateinit var user:User
+
+        @SuppressLint("NewApi")
+        fun Bitmap_to_String(img: Bitmap) : String{
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            img.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+            val imageBytes = byteArrayOutputStream.toByteArray()
+            return Base64.getEncoder().encodeToString(imageBytes)
+        }
+
+        @SuppressLint("NewApi")
+        fun String_to_Bitmap(str:String) : Bitmap{
+            val imageByteArray = Base64.getDecoder().decode(str) //String을 바이트 Array로 Decode한다/
+           return BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.size)
+        }
 
         fun Data_Setting(){
 //            hobby_list.add(MyTalent(100, "이윤성", "꽃꽃이 단기", 10, "공부하러오세요"))

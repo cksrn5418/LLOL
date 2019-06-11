@@ -69,7 +69,7 @@ class MypageFragment : Fragment() {
         val content = SpannableString("회원정보 수정")
         content.setSpan(UnderlineSpan(), 0, content.length, 0)
         mypage_userbtn.text = content
-        mypage_image.setImageBitmap(GlobalApplication.user.profile)
+        mypage_image.setImageBitmap(GlobalApplication.String_to_Bitmap(GlobalApplication.user.profile))
     }
 
     override fun onDetach() {

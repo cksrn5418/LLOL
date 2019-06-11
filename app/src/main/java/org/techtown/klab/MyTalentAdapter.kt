@@ -30,10 +30,10 @@ class MyTalentAdapter(context: Context, val resource:Int, var list:ArrayList<MyT
         v!!.findViewById<TextView>(R.id.row_title).text = p.title
         v!!.findViewById<TextView>(R.id.row_amount).text = p.people_amount.toString()
         if(p.image != null){
-            v!!.findViewById<ImageView>(R.id.row_image).setImageBitmap(p.image)
+            v!!.findViewById<ImageView>(R.id.row_image).setImageBitmap(GlobalApplication.String_to_Bitmap(p.image!!))
         }
         if(p.profileimg != null){
-            v!!.findViewById<ImageView>(R.id.row_profileimg).setImageBitmap(p.profileimg)
+            v!!.findViewById<ImageView>(R.id.row_profileimg).setImageBitmap(GlobalApplication.String_to_Bitmap(p.profileimg!!))
         }
 
         return v // 만들었으니 만든거 return

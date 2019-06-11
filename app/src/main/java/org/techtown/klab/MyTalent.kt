@@ -20,8 +20,8 @@ data class MyTalent
      var cost:String,
      var openchat:String,
      var count:String,
-     var profileimg:Bitmap? = null,
-     var image:Bitmap? = null) {
+     var profileimg:String? = null,
+     var image:String? = null) {
     //데이터를 저장할 class이며,
     // 원소, 생성자, get, set 함수까지 끝
 }

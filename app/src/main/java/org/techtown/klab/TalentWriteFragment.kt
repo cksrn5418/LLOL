@@ -246,6 +246,9 @@ class TalentWriteFragment : Fragment(), OnMapReadyCallback {
             }
             else {
                 builder.setTitle("성공").setMessage("재능 등록이 완료되었습니다.").setPositiveButton("확인") { dialog, which -> }
+
+                var img = (talentwrite_img.drawable as BitmapDrawable).bitmap
+
                 GlobalApplication.recommend_list.add(
                     MyTalent(
                         GlobalApplication.user.id,
@@ -261,11 +264,11 @@ class TalentWriteFragment : Fragment(), OnMapReadyCallback {
                         address,
                         latitude,
                         longitude,
-                        talentwrite_cost.toString().toInt().toString(),
+                        talentwrite_cost.toString(),
                         talentwrite_openchat.text.toString(),
                         0.toString(),
                         GlobalApplication.user.profile,
-                        (talentwrite_img.drawable as BitmapDrawable).bitmap
+                        GlobalApplication.Bitmap_to_String(img)
                     )
                 )
             }

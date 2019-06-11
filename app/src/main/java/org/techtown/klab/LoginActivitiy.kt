@@ -100,7 +100,7 @@ class LoginActivitiy : AppCompatActivity() {
 
                     while(!flag){}
 
-                    GlobalApplication.user = User(userProfile.id.toString(), userProfile.nickname, bmp!!)
+                    GlobalApplication.user = User(userProfile.id.toString(), userProfile.nickname, GlobalApplication.Bitmap_to_String(bmp!!))
 
                     Log.v("로그 : ", userProfile.id.toString())
 
