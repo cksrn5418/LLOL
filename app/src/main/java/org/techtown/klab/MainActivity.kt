@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionList
     // FrameLayout에 각 메뉴의 Fragment를 바꿔 줌
     private val fragmentManager = supportFragmentManager
     private lateinit var transaction: FragmentTransaction
-    lateinit var actionbar:ActionBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,25 +53,25 @@ class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionList
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.bottom_home -> {
-                actionbar.customView.title.text = "홈"
+                GlobalApplication.actionbar.customView.title.text = "홈"
                 builder.setMessage("추천 재능 목록이 나옵니다!!")
                 main_write.show()
                 replaceFragment(MainFragment())
             }
             R.id.bottom_list -> {
-                actionbar.customView.title.text = "재능목록"
+                GlobalApplication.actionbar.customView.title.text = "재능목록"
                 builder.setMessage("검색 옵션에 맞는 재능 목록이 나옵니다!!")
                 main_write.hide()
                 replaceFragment(TalentFragment())
             }
             R.id.bottom_free -> {
-                actionbar.customView.title.text = "게시판"
+                GlobalApplication.actionbar.customView.title.text = "게시판"
                 builder.setMessage("다른 사용자들과 자유롭게 이야기할 수 있습니다!!")
                 main_write.hide()
                 replaceFragment(FreeFragment())
             }
             R.id.bottom_my -> {
-                actionbar.customView.title.text = "마이페이지"
+                GlobalApplication.actionbar.customView.title.text = "마이페이지"
                 builder.setMessage("내 정보와 수강중인 재능 및 재능기부 목록 등을 볼 수 있습니다!!")
                 main_write.hide()
                 replaceFragment(MypageFragment())
@@ -86,17 +85,17 @@ class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionList
             replaceFragment(TalentWriteFragment())
         }
 
-        actionbar = this.supportActionBar!!
-        actionbar.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
-        actionbar.setCustomView(R.layout.custom_bar)
-        actionbar.customView.title.text = "홈"
+        GlobalApplication.actionbar = this.supportActionBar!!
+        GlobalApplication.actionbar.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+        GlobalApplication.actionbar.setCustomView(R.layout.custom_bar)
+        GlobalApplication.actionbar.customView.title.text = "홈"
 
         GlobalApplication.Dataset()
 
         transaction = fragmentManager.beginTransaction()
         transaction.add(R.id.fragment, MainFragment())
         transaction.commit()
-        actionbar.customView.findViewById<Button>(R.id.question).setOnClickListener {
+        GlobalApplication.actionbar.customView.findViewById<Button>(R.id.question).setOnClickListener {
             builder.show()
         }
     }

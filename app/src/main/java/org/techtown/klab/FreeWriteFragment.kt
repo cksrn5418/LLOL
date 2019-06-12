@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.fragment_free_write.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -76,7 +77,14 @@ class FreeWriteFragment : Fragment() {
             val date = Date(now)
             val sdf = SimpleDateFormat("yyyy.MM.dd")
             var getTime = sdf.format(date)
-            GlobalApplication.free_list.add(0, FreeData(free_title.text.toString(), "이찬구", getTime, free_maintext.text.toString(), ArrayList()))
+
+            GlobalApplication.free_list.add(0, FreeData(free_title.text.toString(), GlobalApplication.user.nickname, getTime, free_maintext.text.toString(), ArrayList()))
+
+            var database = FirebaseDatabase.getInstance()
+            var myRef = database.getReference("DB")
+            myRef.child("Free").setValue(GlobalApplication.free_list)
+
+            FreeData(free_title.text.toString(), "이찬구", getTime, free_maintext.text.toString(), ArrayList())
             transaction.replace(R.id.fragment, FreeFragment())
             transaction.addToBackStack(null)
             transaction.commit()

@@ -101,7 +101,7 @@ class LoginActivitiy : AppCompatActivity() {
                     var database = FirebaseDatabase.getInstance()
                     var myRef = database.getReference("Users")
 
-                    myRef.addValueEventListener(object : ValueEventListener{
+                    myRef.addListenerForSingleValueEvent(object : ValueEventListener{
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                             var builder = AlertDialog.Builder(context)

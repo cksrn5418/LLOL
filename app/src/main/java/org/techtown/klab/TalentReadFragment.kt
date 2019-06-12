@@ -3,6 +3,7 @@ package org.techtown.klab
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.res.ColorStateList
 import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
@@ -24,7 +25,9 @@ import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.fragment_talent_read.*
 import java.lang.Exception
 import android.widget.Toast
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.custom_bar.view.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -105,6 +108,21 @@ class TalentReadFragment : Fragment(), OnMapReadyCallback {
         var mapFragment = childFragmentManager.findFragmentById(org.techtown.klab.R.id.talentread_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        var flag = false
+
+        for(i in 0 until GlobalApplication.user.mytalent.size){
+            if(GlobalApplication.selected_lecture.title == GlobalApplication.user.mytalent[i].title){
+                flag = true
+            }
+        }
+
+        if(flag){
+            talentread_save.text = "이미 신청됨"
+            talentread_save.isEnabled = false
+            talentread_save.backgroundTintList = context!!.resources.getColorStateList(R.color.Already)
+        }
+
+
         talentread_save.setOnClickListener {
             val phoneNo = GlobalApplication.selected_lecture.phonenum
             val sms = "[재능시장] 재능시장어플에서 \"" + GlobalApplication.selected_lecture.title + "\"을(를) 보고 연락드렸습니다!"
@@ -112,10 +130,17 @@ class TalentReadFragment : Fragment(), OnMapReadyCallback {
             try {
                 //전송
                 var builder = AlertDialog.Builder(context)
-                builder.setTitle("신청 확인").setMessage("확인을 누르시면 강의 제공자에게 문자가 발송됩니다.").setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
+                builder.setTitle("신청 확인").setMessage("확인을 누르시면 데이터가 저장되며 강의 제공자에게 문자가 발송됩니다.").setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
                     val smsManager = SmsManager.getDefault()
                     smsManager.sendTextMessage(phoneNo, null, sms, null, null)
                     Toast.makeText(context, "전송하였습니다", Toast.LENGTH_SHORT).show()
+
+                    GlobalApplication.user.mytalent.add(GlobalApplication.selected_lecture)
+
+                    var database = FirebaseDatabase.getInstance()
+                    var myRef = database.getReference("Users")
+                    myRef.child(GlobalApplication.user.id).setValue(GlobalApplication.user)
+
                 }).setNegativeButton("취소", DialogInterface.OnClickListener { dialog, which ->
                     Toast.makeText(context, "취소하였습니다", Toast.LENGTH_SHORT).show()
                 }).show()
@@ -128,6 +153,7 @@ class TalentReadFragment : Fragment(), OnMapReadyCallback {
         talentread_cancel.setOnClickListener {
             var fragmentManager = fragmentManager
             var fragmentTransaction = fragmentManager!!.beginTransaction()
+            GlobalApplication.actionbar.customView.title.text = "홈"
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.replace(R.id.fragment, MainFragment())
             fragmentTransaction.commit()

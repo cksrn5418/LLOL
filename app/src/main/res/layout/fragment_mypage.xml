@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="30"
+        android:weightSum="25"
         tools:context=".Register">
     <TextView
             android:layout_weight="2"
@@ -36,6 +36,7 @@
             android:background="#00ff0000"
             android:id="@+id/mypage_userbtn"
             android:text="회원정보 수정"
+            android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"/>
@@ -44,30 +45,45 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"/>
     <LinearLayout
-            android:weightSum="3"
+            android:weightSum="3.5"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2">
+        <TextView
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
         <Button
+                android:id="@+id/mypage_mytalent"
+                android:backgroundTint="@color/BoldGray"
+                android:textColor="@color/White"
+                android:textSize="16sp"
                 android:text="수강중인 재능"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"/>
+        <TextView
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
         <Button
+                android:id="@+id/mypage_talenting"
+                android:backgroundTint="@color/BoldGray"
+                android:textColor="@color/White"
+                android:textSize="16sp"
                 android:text="재능기부 목록"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"/>
-        <Button
-                android:text="개인알림"
-                android:layout_weight="1"
+        <TextView
+                android:layout_weight="0.5"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"/>
     </LinearLayout>
     <ListView
             android:id="@+id/mypage_list"
-            android:layout_weight="20"
+            android:layout_weight="15"
             android:layout_width="match_parent"
             android:layout_height="0dp">
     </ListView>

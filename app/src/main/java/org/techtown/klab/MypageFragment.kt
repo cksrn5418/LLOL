@@ -10,7 +10,10 @@ import android.view.ViewGroup
 import android.text.style.UnderlineSpan
 import android.text.SpannableString
 import android.R
+import android.content.Intent
+import android.widget.ArrayAdapter
 import android.widget.TextView
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.fragment_mypage.*
 
 
@@ -70,6 +73,28 @@ class MypageFragment : Fragment() {
         content.setSpan(UnderlineSpan(), 0, content.length, 0)
         mypage_userbtn.text = content
         mypage_image.setImageBitmap(GlobalApplication.String_to_Bitmap(GlobalApplication.user.profile))
+        mypage_name.text = GlobalApplication.user.nickname
+
+        mypage_list.adapter = MyTalentAdapter(context!!, org.techtown.klab.R.layout.talent_row, GlobalApplication.user.mytalent)
+
+        mypage_userbtn.setOnClickListener {
+            val nextIntent = Intent(context, Register::class.java)
+            startActivity(nextIntent)
+        }
+
+        mypage_mytalent.setOnClickListener {
+            mypage_list.adapter = MyTalentAdapter(context!!, org.techtown.klab.R.layout.talent_row, GlobalApplication.user.mytalent)
+        }
+
+        mypage_talenting.setOnClickListener {
+            var list:ArrayList<MyTalent> = ArrayList()
+            for(i in 0 until GlobalApplication.recommend_list.size){
+                if(GlobalApplication.recommend_list[i].userid == GlobalApplication.user.id){
+                    list.add(GlobalApplication.recommend_list[i])
+                }
+            }
+            mypage_list.adapter = MyTalentAdapter(context!!, org.techtown.klab.R.layout.talent_row, list)
+        }
     }
 
     override fun onDetach() {

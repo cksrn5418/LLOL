@@ -36,6 +36,7 @@ import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.*
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.custom_bar.view.*
 import java.lang.Exception
 import java.util.*
 

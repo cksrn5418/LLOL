@@ -6,4 +6,5 @@ data class FreeData(
     var date:String,
     var maintext:String,
     var comment:ArrayList<Comment>) {
+    constructor() : this("0","0", "0", "0", ArrayList())
 }

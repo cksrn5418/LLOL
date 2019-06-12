@@ -11,7 +11,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListAdapter
 import android.widget.ListView
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.fragment_free_read.*
+import kotlinx.android.synthetic.main.fragment_free_write.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -77,6 +79,10 @@ class FreeReadFragment : Fragment() {
             freeread_writecomment.setText("")
             freeread_comment.adapter = CommentAdapter(context!!, R.layout.comment_row, GlobalApplication.free_list[position].comment)
             setListViewHeightBasedOnChildren(freeread_comment)
+
+            var database = FirebaseDatabase.getInstance()
+            var myRef = database.getReference("DB")
+            myRef.child("Free").setValue(GlobalApplication.free_list)
         }
     }
 

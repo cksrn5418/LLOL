@@ -64,19 +64,41 @@ class TalentFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        var adapter = MyTalentAdapter(context!!, R.layout.talent_row, GlobalApplication.hobby_list)
-        talent_listview.adapter = adapter
+
+        var list: ArrayList<MyTalent>
+
+        if(GlobalApplication.user.flag == "0"){
+            talent_hobbybtn.performClick()
+        }else if(GlobalApplication.user.flag == "1"){
+            talent_healthbtn.performClick()
+        }else if(GlobalApplication.user.flag == "2"){
+            talent_studybtn.performClick()
+        }
 
         talent_hobbybtn.setOnClickListener {
-            adapter = MyTalentAdapter(context!!, R.layout.talent_row, GlobalApplication.hobby_list)
+            list = GlobalApplication.hobby_list
+            var adapter = MyTalentAdapter(context!!, R.layout.talent_row, list)
             talent_listview.adapter = adapter
         }
         talent_healthbtn.setOnClickListener {
-            adapter = MyTalentAdapter(context!!, R.layout.talent_row, GlobalApplication.health_list)
+            list = GlobalApplication.health_list
+            var adapter = MyTalentAdapter(context!!, R.layout.talent_row, list)
             talent_listview.adapter = adapter
         }
         talent_studybtn.setOnClickListener {
-            adapter = MyTalentAdapter(context!!, R.layout.talent_row, GlobalApplication.study_list)
+            list = GlobalApplication.study_list
+            var adapter = MyTalentAdapter(context!!, R.layout.talent_row, list)
+            talent_listview.adapter = adapter
+        }
+
+        talent_searchbtn.setOnClickListener {
+            list = ArrayList()
+            for(i in 0 until GlobalApplication.recommend_list.size) {
+                if (GlobalApplication.recommend_list[i].title.matches(Regex(".*" + talent_search.text.toString() +".*"))){
+                    list.add(GlobalApplication.recommend_list[i])
+                }
+            }
+            var adapter = MyTalentAdapter(context!!, R.layout.talent_row, list)
             talent_listview.adapter = adapter
         }
     }

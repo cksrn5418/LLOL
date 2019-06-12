@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
+import kotlinx.android.synthetic.main.custom_bar.view.*
 import kotlinx.android.synthetic.main.fragment_free.*
 import kotlinx.android.synthetic.main.fragment_talent.*
 

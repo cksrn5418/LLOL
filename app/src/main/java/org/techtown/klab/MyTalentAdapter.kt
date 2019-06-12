@@ -12,8 +12,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
-
-
+import kotlinx.android.synthetic.main.custom_bar.view.*
 
 
 class MyTalentAdapter(context: Context, val resource:Int, var list:ArrayList<MyTalent>)
@@ -48,6 +47,7 @@ class MyTalentAdapter(context: Context, val resource:Int, var list:ArrayList<MyT
             var fragmentManager = (context as FragmentActivity).supportFragmentManager
             var fragmentTransaction = fragmentManager.beginTransaction()
 //        fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right)
+            GlobalApplication.actionbar.customView.title.text = "재능 확인"
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.replace(R.id.fragment, TalentReadFragment())
             fragmentTransaction.commit()

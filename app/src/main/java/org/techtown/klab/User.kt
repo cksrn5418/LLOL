@@ -12,7 +12,8 @@ data class User(
     var age:String,
     var flag:String = (-1).toString(),
     var latitude:String,
-    var longitude:String
+    var longitude:String,
+    var mytalent:ArrayList<MyTalent>
 ) {
-    constructor():this(0.toString(), 0.toString(), 0.toString(), 0.toString(), 0.toString(), 0.toString(), 0.toString(), 0.toString())
+    constructor():this(0.toString(), 0.toString(), 0.toString(), 0.toString(), 0.toString(), 0.toString(), 0.toString(), 0.toString(), ArrayList())
 }

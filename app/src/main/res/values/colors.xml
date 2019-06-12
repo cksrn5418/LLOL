@@ -2,6 +2,7 @@
 <resources>
     <color name="White">#FFFFFF</color>
     <color name="BoldGray">#424242</color>
+    <color name="Already">#6E6E6E</color>
     <color name="colorPrimary">#F5A9A9</color>
     <color name="colorPrimaryDark">#F78181</color>
     <color name="colorAccent">#FE2E64</color>

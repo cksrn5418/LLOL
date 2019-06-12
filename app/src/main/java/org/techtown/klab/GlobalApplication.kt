@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.support.v7.app.ActionBar
 import android.widget.ArrayAdapter
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -14,6 +15,7 @@ import java.io.ByteArrayOutputStream
 import java.util.*
 import kotlin.collections.ArrayList
 import android.widget.BaseAdapter
+import kotlinx.android.synthetic.main.fragment_free_write.*
 import kotlinx.android.synthetic.main.fragment_main.*
 
 
@@ -30,6 +32,7 @@ class GlobalApplication : Application() {
         var free_index:Int = -1
         var user:User = User()
         var selected_lecture = MyTalent()
+        lateinit var actionbar: ActionBar
 
         @SuppressLint("NewApi")
         fun Bitmap_to_String(img: Bitmap) : String{
@@ -80,6 +83,23 @@ class GlobalApplication : Application() {
                     GlobalApplication.health_list = health
                     GlobalApplication.study_list = study
                     GlobalApplication.recommend_list = recommend
+                }
+            })
+
+            var database1 = FirebaseDatabase.getInstance()
+            var myRef1 = database1.getReference("DB/Free")
+            //var talents = myRef.push();//id 자동생성
+            myRef1.addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    free_list = ArrayList()
+                    for(data in dataSnapshot.children) {
+                        val pdata = data.getValue(FreeData::class.java)
+                        free_list.add(pdata!!)
+                    }
                 }
             })
         }
