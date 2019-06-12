@@ -4,11 +4,21 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.widget.ArrayAdapter
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.kakao.auth.KakaoSDK
 import java.io.ByteArrayOutputStream
 import java.util.*
+import kotlin.collections.ArrayList
+import android.widget.BaseAdapter
+import kotlinx.android.synthetic.main.fragment_main.*
+
 
 class GlobalApplication : Application() {
+
     companion object {
         var instance: GlobalApplication? = null
         var hobby_list:ArrayList<MyTalent> = ArrayList()
@@ -16,8 +26,10 @@ class GlobalApplication : Application() {
         var study_list:ArrayList<MyTalent> = ArrayList()
         var free_list:ArrayList<FreeData> = ArrayList()
         var recommend_list:ArrayList<MyTalent> = ArrayList()
+        var my_list:ArrayList<MyTalent> = ArrayList()
         var free_index:Int = -1
-        lateinit var user:User
+        var user:User = User()
+        var selected_lecture = MyTalent()
 
         @SuppressLint("NewApi")
         fun Bitmap_to_String(img: Bitmap) : String{
@@ -33,26 +45,43 @@ class GlobalApplication : Application() {
            return BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.size)
         }
 
-        fun Data_Setting(){
-//            hobby_list.add(MyTalent(100, "이윤성", "꽃꽃이 단기", 10, "공부하러오세요"))
-//            hobby_list.add(MyTalent(100, "오지연", "전국 식도락 탐험", 8, "공부하러오세요"))
-//            hobby_list.add(MyTalent(100, "이주형", "수제맥주 만들기", 10, "공부하러오세요"))
-//            hobby_list.add(MyTalent(100, "이찬구", "장기 한판?", 20, "공부하러오세요"))
-//
-//            health_list.add(MyTalent(100, "이윤성", "스쿼트는 나에게 맡겨", 4, "사실운동못해요..^^"))
-//            health_list.add(MyTalent(100, "이윤성", "신앙기도, 간증", 4, "사실불교에요..^^"))
-//            health_list.add(MyTalent(100, "오지연", "줌바댄스 추러 오세요", 4, "사실춤못춰요..^^"))
-//            health_list.add(MyTalent(100, "이주형", "건강하게 술마시는 비법", 4, "사실술못마셔요..^^"))
-//
-//            study_list.add(MyTalent(100, "오지연", "영어 회화", 2, "미쿸인입니다"))
-//            study_list.add(MyTalent(100, "이윤성", "올바른 글쓰기", 2, "한쿸인입니다"))
-//            study_list.add(MyTalent(100, "이찬구", "포토샵 교육", 2, "사람입니다"))
+        fun Dataset(){
+            var database = FirebaseDatabase.getInstance()
+            var myRef = database.getReference("DB/Talents")
 
-            free_list.add(FreeData("꽃꽃이 너무 재밌지 않아요?", "이윤자", "2019.04.23", "꽃꽃이꿀잼", ArrayList()))
-            free_list.add(FreeData("하루에 운동 얼마나 하세요?", "이주똥", "2019.04.23", "꽃꽃이꿀잼", ArrayList()))
-            free_list.add(FreeData("올해 무료건강검진 날짜 언제죠?", "오지순", "2019.04.20", "꽃꽃이꿀잼", ArrayList()))
-            free_list.add(FreeData("요즘 공부가 너무 재밌어요", "이찬룡", "2019.04.10", "꽃꽃이꿀잼", ArrayList()))
-            free_list.add(FreeData("금강산복지센터에서 무료취업교육하네요!", "배진자", "2019.04.01", "꽃꽃이꿀잼", ArrayList()))
+            myRef.addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    var my = ArrayList<MyTalent>()
+                    var hobby = ArrayList<MyTalent>()
+                    var health = ArrayList<MyTalent>()
+                    var study = ArrayList<MyTalent>()
+                    var recommend = ArrayList<MyTalent>()
+
+                    for(data in dataSnapshot.children) {
+                        val pdata = data.getValue(MyTalent::class.java)
+                        if(pdata!!.userid == GlobalApplication.user.id)
+                            my.add(pdata!!)
+                        if(pdata!!.category == "0"){
+                            hobby.add(pdata)
+                        }else if(pdata!!.category == "1"){
+                            health.add(pdata)
+                        }else if(pdata!!.category == "2"){
+                            study.add(pdata)
+                        }
+                        recommend.add(pdata!!)
+                    }
+
+                    GlobalApplication.my_list = my
+                    GlobalApplication.hobby_list = hobby
+                    GlobalApplication.health_list = health
+                    GlobalApplication.study_list = study
+                    GlobalApplication.recommend_list = recommend
+                }
+            })
         }
     }
 
@@ -69,6 +98,26 @@ class GlobalApplication : Application() {
         instance = this
         // Kakao Sdk 초기화
         KakaoSDK.init(KakaoSDKAdapter())
+
+        var database = FirebaseDatabase.getInstance()
+        var myRef = database.getReference("DB/Talents")
+
+        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                var recommend = ArrayList<MyTalent>()
+
+                for(data in dataSnapshot.children) {
+                    val pdata = data.getValue(MyTalent::class.java)
+                    recommend.add(pdata!!)
+                }
+
+                GlobalApplication.recommend_list = recommend
+            }
+        })
     }
 
     override fun onTerminate() {

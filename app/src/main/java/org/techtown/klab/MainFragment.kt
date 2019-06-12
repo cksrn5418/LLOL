@@ -7,8 +7,11 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.fragment_main.*
+import android.widget.BaseAdapter
+import kotlin.math.sqrt
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -61,16 +64,60 @@ class MainFragment : Fragment() {
         }
     }
 
+    fun calcDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val EARTH_R: Double
+        val Rad: Double
+        val radLat1: Double
+        val radLat2: Double
+        val radDist: Double
+        var distance: Double
+        val ret: Double
+
+        EARTH_R = 6371000.0
+        Rad = Math.PI / 180
+        radLat1 = Rad * lat1
+        radLat2 = Rad * lat2
+        radDist = Rad * (lon1 - lon2)
+
+        distance = Math.sin(radLat1) * Math.sin(radLat2)
+        distance = distance + Math.cos(radLat1) * Math.cos(radLat2) * Math.cos(radDist)
+        ret = EARTH_R * Math.acos(distance)
+
+        return ret
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
 //        actionbar!!.title = "홈"
 
-        var adapter = MyTalentAdapter(context!!, R.layout.talent_row, GlobalApplication.recommend_list)
-        main_listview.adapter = adapter
         var spinnerArray = ArrayList<String>()
         spinnerArray.add("인기순")
         spinnerArray.add("거리순")
         var spinner_adapter = ArrayAdapter(context, R.layout.support_simple_spinner_dropdown_item, spinnerArray)
         main_spinner.adapter = spinner_adapter
+
+        main_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if(position == 0){
+                    GlobalApplication.recommend_list.sortBy {
+                        it.count.toInt()
+                    }
+                    var adapter = MyTalentAdapter(context!!, R.layout.talent_row, GlobalApplication.recommend_list)
+                    main_listview.adapter = adapter
+                }
+                else if(position == 1){
+                    GlobalApplication.recommend_list.sortBy {
+                        calcDistance(it.latitude.toDouble(), it.longitude.toDouble(),  GlobalApplication.user.latitude.toDouble(),  GlobalApplication.user.longitude.toDouble())
+                    }
+                    var adapter = MyTalentAdapter(context!!, R.layout.talent_row, GlobalApplication.recommend_list)
+                    main_listview.adapter = adapter
+                }
+            }
+
+        }
         super.onActivityCreated(savedInstanceState)
     }
 

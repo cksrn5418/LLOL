@@ -5,10 +5,14 @@ import com.google.firebase.database.Exclude
 import com.google.firebase.database.PropertyName
 
 data class User(
-    @PropertyName("id") var id:String,
-    @PropertyName("nickname") var nickname:String,
-    @PropertyName("profile") var profile:String,
-    @PropertyName("phonenum") var phonenum:String = "",
-    @PropertyName("age") var age:String = "",
-    @PropertyName("flag") var flag:String = (-1).toString()
-)
+    var id:String,
+    var nickname:String,
+    var profile:String,
+    var phonenum:String,
+    var age:String,
+    var flag:String = (-1).toString(),
+    var latitude:String,
+    var longitude:String
+) {
+    constructor():this(0.toString(), 0.toString(), 0.toString(), 0.toString(), 0.toString(), 0.toString(), 0.toString(), 0.toString())
+}

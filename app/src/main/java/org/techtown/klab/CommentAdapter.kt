@@ -24,7 +24,7 @@ class CommentAdapter(context: Context, val resource:Int, var list:ArrayList<Comm
         }
 
         val p = list.get(position)
-        v!!.findViewById<ImageView>(R.id.comment_image).setImageBitmap(p.profile)
+        v!!.findViewById<ImageView>(R.id.comment_image).setImageBitmap(GlobalApplication.String_to_Bitmap(p.profile))
         v!!.findViewById<TextView>(R.id.comment_name).text = p.name
         v!!.findViewById<TextView>(R.id.comment_text).text = p.text
 

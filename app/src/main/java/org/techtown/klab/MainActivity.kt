@@ -1,21 +1,27 @@
 package org.techtown.klab
 
-import android.content.res.ColorStateList
-import android.drm.DrmStore
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
+import android.widget.BaseAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.Button
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.custom_bar.view.*
+import kotlinx.android.synthetic.main.fragment_main.*
 
 
-class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionListener, TalentWriteFragment.OnFragmentInteractionListener, TalentFragment.OnFragmentInteractionListener, FreeFragment.OnFragmentInteractionListener, FreeWriteFragment.OnFragmentInteractionListener, FreeReadFragment.OnFragmentInteractionListener, MypageFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionListener, TalentWriteFragment.OnFragmentInteractionListener, TalentReadFragment.OnFragmentInteractionListener, TalentFragment.OnFragmentInteractionListener, FreeFragment.OnFragmentInteractionListener, FreeWriteFragment.OnFragmentInteractionListener, FreeReadFragment.OnFragmentInteractionListener, MypageFragment.OnFragmentInteractionListener {
 
     lateinit var builder:AlertDialog.Builder
 
@@ -41,7 +47,6 @@ class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionList
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        GlobalApplication.Data_Setting()
         Init()
         dialog()
     }
@@ -80,10 +85,14 @@ class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionList
         main_write.setOnClickListener{
             replaceFragment(TalentWriteFragment())
         }
+
         actionbar = this.supportActionBar!!
         actionbar.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
         actionbar.setCustomView(R.layout.custom_bar)
         actionbar.customView.title.text = "홈"
+
+        GlobalApplication.Dataset()
+
         transaction = fragmentManager.beginTransaction()
         transaction.add(R.id.fragment, MainFragment())
         transaction.commit()
@@ -91,6 +100,7 @@ class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionList
             builder.show()
         }
     }
+
     fun dialog(){
         builder = AlertDialog.Builder(this)
         builder.setTitle("도움말")

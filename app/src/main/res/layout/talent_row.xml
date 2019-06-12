@@ -37,7 +37,7 @@
             <TextView
                     android:id="@+id/row_profilename"
                     android:layout_width="wrap_content"
-                    android:layout_height="50sp"
+                    android:layout_height="60sp"
                     android:textSize="20sp"
                     android:text="이찬구"
                     android:gravity="center|left"/>
@@ -52,12 +52,12 @@
                     android:textSize="15dp"
                     android:text="   "/>
             <TextView
+                    android:fontFamily="@font/headline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/row_title"
                     android:textSize="30sp"
                     android:gravity="left"
-                    android:textStyle="bold"
                     android:text="재능기부"/>
         </LinearLayout>
 
@@ -75,18 +75,18 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:text="최대인원 : "/>
+                    android:textSize="25sp"
+                    android:text="인원 : "/>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/row_amount"
-                    android:textSize="15sp"
+                    android:textSize="25sp"
                     android:text="3"/>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textSize="25sp"
                     android:text="명"/>
         </LinearLayout>
         <TextView
@@ -95,12 +95,12 @@
                 android:textSize="5sp"
                 android:text="   "/>
     </LinearLayout>
-    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.2"/>
     <ImageView
             android:src="@drawable/empty"
             android:id="@+id/row_image"
-            android:layout_weight="4"
+            android:layout_weight="5.6"
             android:layout_width="0dp"
             android:layout_height="match_parent"/>
-    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="0.2"/>
 </LinearLayout>

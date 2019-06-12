@@ -24,8 +24,9 @@ import java.security.NoSuchAlgorithmException
 import android.content.pm.PackageManager
 import android.content.pm.PackageInfo
 import android.util.Base64
+import android.widget.Toast
 import com.google.firebase.FirebaseApp
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 
 
 class LoginActivitiy : AppCompatActivity() {
@@ -37,10 +38,6 @@ class LoginActivitiy : AppCompatActivity() {
         Init()
     }
     fun Init(){
-        var database = FirebaseDatabase.getInstance()
-        var myRef = database.getReference("message")
-        myRef.setValue("Hello, World!")
-
         supportActionBar!!.hide()
         var callback = SessionCallback(this)
         Session.getCurrentSession().addCallback(callback)
@@ -92,6 +89,7 @@ class LoginActivitiy : AppCompatActivity() {
                             con.connect()
                             bmp = BitmapFactory.decodeStream(url.openStream())
                             con.disconnect()
+
                             flag = true
                         } catch (e: Exception) {
                             Log.v("Error : ", e.toString())
@@ -100,20 +98,45 @@ class LoginActivitiy : AppCompatActivity() {
 
                     while(!flag){}
 
-                    GlobalApplication.user = User(userProfile.id.toString(), userProfile.nickname, GlobalApplication.Bitmap_to_String(bmp!!))
+                    var database = FirebaseDatabase.getInstance()
+                    var myRef = database.getReference("Users")
 
-                    Log.v("로그 : ", userProfile.id.toString())
+                    myRef.addValueEventListener(object : ValueEventListener{
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                    var builder = AlertDialog.Builder(context)
-                    builder.setCancelable(false)
-                    builder.setTitle("로그인 성공!").setMessage("로그인 성공하였습니다. 확인을 누르시면 다음 페이지로 넘어갑니다").setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
-                        dialog.dismiss()
-                        val nextIntent = Intent(context, Register::class.java)
-                        context.startActivity(nextIntent)
+                            var builder = AlertDialog.Builder(context)
+                            builder.setCancelable(false)
+                            builder.setTitle("로그인 실패!").setMessage("회원 정보가 없습니다. 회원가입창으로 이동합니다.").setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
+                                dialog.dismiss()
+                                GlobalApplication.user.id = userProfile.id.toString()
+                                GlobalApplication.user.profile = GlobalApplication.Bitmap_to_String(bmp!!)
+                                GlobalApplication.user.nickname = userProfile.nickname
+                                GlobalApplication.user.flag = (-1).toString()
+
+                                val nextIntent = Intent(context, Register::class.java)
+                                context.startActivity(nextIntent)
+                            })
+                            for(data in dataSnapshot.children){
+                                val pdata = data.getValue(User::class.java)
+
+                                if(pdata!!.id == userProfile.id.toString()) {
+                                    GlobalApplication.user = pdata
+
+                                    builder.setTitle("로그인 성공!").setMessage("로그인 성공하였습니다. 확인을 누르시면 다음 페이지로 넘어갑니다").setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
+                                        dialog.dismiss()
+                                        val nextIntent = Intent(context, MainActivity::class.java)
+                                        context.startActivity(nextIntent)
+                                    })
+                                }
+                            }
+                            builder.show()
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                        }
                     })
-                    builder.show()
                 }
-
                 // 사용자 정보 요청 실패
                 override fun onFailure(errorResult: ErrorResult?) {
                     Log.e("SessionCallback :: ", "onFailure : " + errorResult!!.errorMessage)

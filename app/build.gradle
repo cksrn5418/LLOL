@@ -24,6 +24,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.koushikdutta.ion:ion:2.+'
     implementation group: 'com.kakao.sdk', name: 'usermgmt', version: project.KAKAO_SDK_VERSION
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

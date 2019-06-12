@@ -35,6 +35,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.*
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.database.FirebaseDatabase
 import java.lang.Exception
 import java.util.*
 
@@ -236,41 +237,45 @@ class TalentWriteFragment : Fragment(), OnMapReadyCallback {
         }
 
         talentwrite_cancel.setOnClickListener {
-            replaceFragment(MainFragment())
+            var fragmentManager = fragmentManager
+            var fragmentTransaction = fragmentManager!!.beginTransaction()
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.replace(org.techtown.klab.R.id.fragment, MainFragment())
+            fragmentTransaction.commit()
         }
 
         talentwrite_save.setOnClickListener{
             var builder = AlertDialog.Builder(context)
-            if(talentwrite_title.text.toString() == "" || talentwrite_people.selectedItemPosition == 0 || address == ""){
-                builder.setTitle("실패").setMessage("필수 입력 항목에 내용을 채워주세요").setPositiveButton("확인") { dialog, which -> }
+            if(talentwrite_title.text.toString() == "" || talentwrite_people.selectedItemPosition == 0 || address == "" || mYear == -1){
+                builder.setTitle("실패").setMessage("제목, 인원, 주소, 마감일자는 필수항목입니다.").setPositiveButton("확인") { dialog, which -> }
             }
             else {
                 builder.setTitle("성공").setMessage("재능 등록이 완료되었습니다.").setPositiveButton("확인") { dialog, which -> }
 
                 var img = (talentwrite_img.drawable as BitmapDrawable).bitmap
 
-                GlobalApplication.recommend_list.add(
-                    MyTalent(
-                        GlobalApplication.user.id,
-                        GlobalApplication.user.nickname,
-                        talentwrite_title.text.toString(),
-                        talentwrite_category.selectedItemPosition.toString(),
-                        talentwrite_people.selectedItemPosition.toString(),
-                        talentwrite_maintext.toString(),
-                        mYear.toString(),
-                        mMonth.toString(),
-                        mDay.toString(),
-                        talentwrite_datedetail.text.toString(),
-                        address,
-                        latitude,
-                        longitude,
-                        talentwrite_cost.toString(),
-                        talentwrite_openchat.text.toString(),
-                        0.toString(),
-                        GlobalApplication.user.profile,
-                        GlobalApplication.Bitmap_to_String(img)
-                    )
+                var talent = MyTalent(
+                    GlobalApplication.user.id,
+                    GlobalApplication.user.nickname,
+                    GlobalApplication.user.phonenum,
+                    talentwrite_title.text.toString(),
+                    talentwrite_category.selectedItemPosition.toString(),
+                    talentwrite_people.selectedItemPosition.toString(),
+                    talentwrite_maintext.text.toString(),
+                    mYear.toString(),
+                    mMonth.toString(),
+                    mDay.toString(),
+                    address,
+                    latitude,
+                    longitude,
+                    0.toString(),
+                    GlobalApplication.user.profile,
+                    GlobalApplication.Bitmap_to_String(img)
                 )
+
+                var database = FirebaseDatabase.getInstance()
+                var myRef = database.getReference("DB/Talents")
+                myRef.child(talent.title + ":" + talent.userid).setValue(talent)
             }
             builder.show()
         }
@@ -305,6 +310,6 @@ class TalentWriteFragment : Fragment(), OnMapReadyCallback {
         mMonth = monthOfYear
         mDay = dayOfMonth
 
-        talentwrite_datebtn.text = mYear.toString() + "년 " + mMonth.toString() + "월 " + mDay.toString() + "일"
+        talentwrite_datebtn.text = mYear.toString() + "년 " + (mMonth + 1).toString() + "월 " + mDay.toString() + "일"
     }
 }
