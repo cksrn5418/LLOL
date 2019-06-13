@@ -8,8 +8,6 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import com.google.android.gms.maps.GoogleMap
 import kotlinx.android.synthetic.main.fragment_talent_write.*
 import android.R
@@ -24,11 +22,11 @@ import android.graphics.BitmapFactory
 import android.graphics.Path
 import android.graphics.drawable.BitmapDrawable
 import android.location.Address
+import android.provider.MediaStore
 import android.support.v4.app.FragmentManager
 import android.support.v7.widget.AlertDialogLayout
 import android.util.Log
-import android.widget.ArrayAdapter
-import android.widget.DatePicker
+import android.widget.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -37,6 +35,8 @@ import kotlinx.android.synthetic.*
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.custom_bar.view.*
+import java.io.FileNotFoundException
+import java.io.IOException
 import java.lang.Exception
 import java.util.*
 
@@ -288,10 +288,15 @@ class TalentWriteFragment : Fragment(), OnMapReadyCallback {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 try {
-                    // 선택한 이미지에서 비트맵 생성
-                    talentwrite_img.setImageURI(data!!.data)
-                } catch (e:Exception) {
-                    Log.v("Error", e.printStackTrace().toString())
+                    var bitmap = MediaStore.Images.Media.getBitmap(activity!!.contentResolver, data!!.data)
+                    var scaled = Bitmap.createScaledBitmap(bitmap, 800, bitmap.height/(bitmap.width/800), true)
+                    talentwrite_img.setImageBitmap(scaled)
+                } catch (e:FileNotFoundException) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (e: IOException) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
             }
         }

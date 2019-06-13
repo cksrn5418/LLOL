@@ -3,6 +3,7 @@ package org.techtown.klab
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.location.Address
 import android.location.Geocoder
@@ -131,8 +132,12 @@ class TalentReadFragment : Fragment(), OnMapReadyCallback {
                 //전송
                 var builder = AlertDialog.Builder(context)
                 builder.setTitle("신청 확인").setMessage("확인을 누르시면 데이터가 저장되며 강의 제공자에게 문자가 발송됩니다.").setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
-                    val smsManager = SmsManager.getDefault()
-                    smsManager.sendTextMessage(phoneNo, null, sms, null, null)
+                    val message = Uri.parse("sms:$phoneNo")
+                    val messageIntent = Intent(
+                        Intent.ACTION_SENDTO, message
+                    )
+                    messageIntent.putExtra("sms_body", sms)
+                    startActivity(messageIntent)
                     Toast.makeText(context, "전송하였습니다", Toast.LENGTH_SHORT).show()
 
                     GlobalApplication.user.mytalent.add(GlobalApplication.selected_lecture)

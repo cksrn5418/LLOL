@@ -42,11 +42,27 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
-                    <ImageView
-                            android:src="@drawable/empty"
-                            android:id="@+id/talentread_img"
+                    <LinearLayout
+                            android:weightSum="10"
+                            android:orientation="horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content">
+                        <TextView
+                                android:layout_weight="1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"/>
+                        <ImageView
+                                android:adjustViewBounds="true"
+                                android:layout_weight="8"
+                                android:src="@drawable/empty"
+                                android:id="@+id/talentread_img"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"/>
+                        <TextView
+                                android:layout_weight="1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"/>
+                    </LinearLayout>
                     <TextView
                             android:layout_weight="0.5"
                             android:layout_width="wrap_content"

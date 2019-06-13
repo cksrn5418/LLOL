@@ -67,14 +67,6 @@ class TalentFragment : Fragment() {
 
         var list: ArrayList<MyTalent>
 
-        if(GlobalApplication.user.flag == "0"){
-            talent_hobbybtn.performClick()
-        }else if(GlobalApplication.user.flag == "1"){
-            talent_healthbtn.performClick()
-        }else if(GlobalApplication.user.flag == "2"){
-            talent_studybtn.performClick()
-        }
-
         talent_hobbybtn.setOnClickListener {
             list = GlobalApplication.hobby_list
             var adapter = MyTalentAdapter(context!!, R.layout.talent_row, list)
@@ -89,6 +81,14 @@ class TalentFragment : Fragment() {
             list = GlobalApplication.study_list
             var adapter = MyTalentAdapter(context!!, R.layout.talent_row, list)
             talent_listview.adapter = adapter
+        }
+
+        if(GlobalApplication.user.flag.equals("1")){
+            talent_hobbybtn.performClick()
+        }else if(GlobalApplication.user.flag.equals("2")){
+            talent_healthbtn.performClick()
+        }else if(GlobalApplication.user.flag.equals("3")){
+            talent_studybtn.performClick()
         }
 
         talent_searchbtn.setOnClickListener {

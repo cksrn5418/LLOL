@@ -19,14 +19,10 @@ import com.kakao.util.exception.KakaoException
 import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
-import android.content.pm.PackageManager
-import android.content.pm.PackageInfo
-import android.util.Base64
 import android.widget.Toast
-import com.google.firebase.FirebaseApp
 import com.google.firebase.database.*
+import com.kakao.usermgmt.LoginButton
+import kotlinx.android.synthetic.main.activity_login.*
 
 
 class LoginActivitiy : AppCompatActivity() {
@@ -34,18 +30,24 @@ class LoginActivitiy : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
         Init()
     }
+    
     fun Init(){
         supportActionBar!!.hide()
         var callback = SessionCallback(this)
         Session.getCurrentSession().addCallback(callback)
+
+        login_kakao.setOnClickListener {
+            it.isClickable = false
+            Log.v("안열려?", "ㅇㅇ")
+        }
     }
 
     class SessionCallback : ISessionCallback {
 
         var context:Activity
+        lateinit var btn:LoginButton
 
         constructor(context:Activity){
             this.context = context
@@ -56,11 +58,11 @@ class LoginActivitiy : AppCompatActivity() {
         }
 
         override fun onSessionOpened() {
+            btn = context.findViewById(R.id.login_kakao)
             requestMe()
         }
 
         fun requestMe() {
-
             // 사용자정보 요청 결과에 대한 Callback
             UserManagement.getInstance().requestMe(object : MeResponseCallback() {
                 // 세션 오픈 실패. 세션이 삭제된 경우,
@@ -142,6 +144,18 @@ class LoginActivitiy : AppCompatActivity() {
                     Log.e("SessionCallback :: ", "onFailure : " + errorResult!!.errorMessage)
                 }
             })
+
+            btn.isClickable = true
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == 123) {
+            if (resultCode == Activity.RESULT_OK) {
+                val pass = data?.getStringExtra("pass")
+                Toast.makeText(this, pass, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

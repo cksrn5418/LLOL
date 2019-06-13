@@ -98,20 +98,6 @@ class Register : AppCompatActivity(), OnMapReadyCallback {
         var mMap = googlemap
         var geocoder = Geocoder(this)
 
-        mMap!!.setOnMapClickListener { point ->
-            val mOptions = MarkerOptions()
-            // 마커 타이틀
-            mOptions.title("마커 좌표")
-            latitude = point!!.latitude.toString() // 위도
-            longitude = point!!.longitude.toString() // 경도
-            // 마커의 스니펫(간단한 텍스트) 설정
-            mOptions.snippet("$latitude, $longitude")
-            // LatLng: 위도 경도 쌍을 나타냄
-            mOptions.position(LatLng(latitude.toDouble(), longitude.toDouble()))
-            // 마커(핀) 추가
-            mMap!!.addMarker(mOptions)
-        }
-
         register_searchbtn.setOnClickListener {
             var str = register_searchloc.text.toString()
             lateinit var addressList:List<Address>

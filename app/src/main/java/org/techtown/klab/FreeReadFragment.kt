@@ -75,7 +75,7 @@ class FreeReadFragment : Fragment() {
         setListViewHeightBasedOnChildren(freeread_comment)
 
         freeread_commentbtn.setOnClickListener {
-            GlobalApplication.free_list[position].comment.add(0, Comment(GlobalApplication.user.profile, GlobalApplication.user.nickname, freeread_writecomment.text.toString()))
+            GlobalApplication.free_list[position].comment.add(Comment(GlobalApplication.user.profile, GlobalApplication.user.nickname, freeread_writecomment.text.toString()))
             freeread_writecomment.setText("")
             freeread_comment.adapter = CommentAdapter(context!!, R.layout.comment_row, GlobalApplication.free_list[position].comment)
             setListViewHeightBasedOnChildren(freeread_comment)
