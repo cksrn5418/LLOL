@@ -38,7 +38,7 @@ class Register : AppCompatActivity(), OnMapReadyCallback {
         var flag = i.getBooleanExtra("register", true)
 
         if(!flag){
-            register_btn.text = "수정"
+            register_btn.text = "수  정"
         }
 
         var age = ArrayList<String>()
