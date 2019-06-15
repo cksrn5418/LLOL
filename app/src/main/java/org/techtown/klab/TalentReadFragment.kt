@@ -138,19 +138,19 @@ class TalentReadFragment : Fragment(), OnMapReadyCallback {
             talentread_save.backgroundTintList = context!!.resources.getColorStateList(R.color.Already)
         }
 
-        if (GlobalApplication.selected_lecture.dueyear == year) {
-            if (GlobalApplication.selected_lecture.duemonth == (month.toInt() - 1).toString()) {
-                if (GlobalApplication.selected_lecture.dueday < day) {
+        if (GlobalApplication.selected_lecture.dueyear.toInt() == year.toInt()) {
+            if (GlobalApplication.selected_lecture.duemonth.toInt() == (month.toInt() - 1)) {
+                if (GlobalApplication.selected_lecture.dueday.toInt() < day.toInt()) {
                     talentread_save.text = "기한 만료"
                     talentread_save.isEnabled = false
                     talentread_save.backgroundTintList = context!!.resources.getColorStateList(R.color.Already)
                 }
-            } else if (GlobalApplication.selected_lecture.duemonth < (month.toInt() - 1).toString()) {
+            } else if (GlobalApplication.selected_lecture.duemonth.toInt() < (month.toInt() - 1)) {
                 talentread_save.text = "기한 만료"
                 talentread_save.isEnabled = false
                 talentread_save.backgroundTintList = context!!.resources.getColorStateList(R.color.Already)
             }
-        } else if (GlobalApplication.selected_lecture.dueyear < year) {
+        } else if (GlobalApplication.selected_lecture.dueyear.toInt() < year.toInt()) {
             talentread_save.text = "기한 만료"
             talentread_save.isEnabled = false
             talentread_save.backgroundTintList = context!!.resources.getColorStateList(R.color.Already)
