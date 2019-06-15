@@ -91,7 +91,6 @@ class LoginActivitiy : AppCompatActivity() {
                             con.connect()
                             bmp = BitmapFactory.decodeStream(url.openStream())
                             con.disconnect()
-
                             flag = true
                         } catch (e: Exception) {
                             Log.v("Error : ", e.toString())
@@ -127,6 +126,7 @@ class LoginActivitiy : AppCompatActivity() {
                                     builder.setTitle("로그인 성공!").setMessage("로그인 성공하였습니다. 확인을 누르시면 다음 페이지로 넘어갑니다").setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
                                         dialog.dismiss()
                                         val nextIntent = Intent(context, MainActivity::class.java)
+                                        nextIntent.putExtra("register", true)
                                         context.startActivity(nextIntent)
                                     })
                                 }

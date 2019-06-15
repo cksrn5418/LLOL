@@ -29,6 +29,8 @@ import android.widget.Toast
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.custom_bar.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -105,23 +107,55 @@ class TalentReadFragment : Fragment(), OnMapReadyCallback {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        var mapFragment = childFragmentManager.findFragmentById(org.techtown.klab.R.id.talentread_map) as SupportMapFragment
+        val now = System.currentTimeMillis()
+        val date = Date(now)
+        val sdf = SimpleDateFormat("yyyy.MM.dd")
+        var getTime = sdf.format(date)
+        var year = getTime.split(".")[0]
+        var month = getTime.split(".")[1]
+        var day = getTime.split(".")[2]
+        var mapFragment =
+            childFragmentManager.findFragmentById(org.techtown.klab.R.id.talentread_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         var flag = false
 
-        for(i in 0 until GlobalApplication.user.mytalent.size){
-            if(GlobalApplication.selected_lecture.title == GlobalApplication.user.mytalent[i].title){
+        for (i in 0 until GlobalApplication.user.mytalent.size) {
+            if (GlobalApplication.selected_lecture.title == GlobalApplication.user.mytalent[i].title) {
                 flag = true
             }
         }
 
-        if(flag){
+        if (flag) {
             talentread_save.text = "이미 신청됨"
             talentread_save.isEnabled = false
             talentread_save.backgroundTintList = context!!.resources.getColorStateList(R.color.Already)
         }
+
+        if (GlobalApplication.selected_lecture.userid == GlobalApplication.user.id) {
+            talentread_save.text = "신청 불가"
+            talentread_save.isEnabled = false
+            talentread_save.backgroundTintList = context!!.resources.getColorStateList(R.color.Already)
+        }
+
+        if (GlobalApplication.selected_lecture.dueyear == year) {
+            if (GlobalApplication.selected_lecture.duemonth == (month.toInt() - 1).toString()) {
+                if (GlobalApplication.selected_lecture.dueday < day) {
+                    talentread_save.text = "기한 만료"
+                    talentread_save.isEnabled = false
+                    talentread_save.backgroundTintList = context!!.resources.getColorStateList(R.color.Already)
+                }
+            } else if (GlobalApplication.selected_lecture.duemonth < (month.toInt() - 1).toString()) {
+                talentread_save.text = "기한 만료"
+                talentread_save.isEnabled = false
+                talentread_save.backgroundTintList = context!!.resources.getColorStateList(R.color.Already)
+            }
+        } else if (GlobalApplication.selected_lecture.dueyear < year) {
+            talentread_save.text = "기한 만료"
+            talentread_save.isEnabled = false
+            talentread_save.backgroundTintList = context!!.resources.getColorStateList(R.color.Already)
+        }
+
 
 
         talentread_save.setOnClickListener {
@@ -131,24 +165,25 @@ class TalentReadFragment : Fragment(), OnMapReadyCallback {
             try {
                 //전송
                 var builder = AlertDialog.Builder(context)
-                builder.setTitle("신청 확인").setMessage("확인을 누르시면 데이터가 저장되며 강의 제공자에게 문자가 발송됩니다.").setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
-                    val message = Uri.parse("sms:$phoneNo")
-                    val messageIntent = Intent(
-                        Intent.ACTION_SENDTO, message
-                    )
-                    messageIntent.putExtra("sms_body", sms)
-                    startActivity(messageIntent)
-                    Toast.makeText(context, "전송하였습니다", Toast.LENGTH_SHORT).show()
+                builder.setTitle("신청 확인").setMessage("확인을 누르시면 데이터가 저장되며 강의 제공자에게 문자가 발송됩니다.")
+                    .setPositiveButton("확인", DialogInterface.OnClickListener { dialog, which ->
+                        val message = Uri.parse("sms:$phoneNo")
+                        val messageIntent = Intent(
+                            Intent.ACTION_SENDTO, message
+                        )
+                        messageIntent.putExtra("sms_body", sms)
+                        startActivity(messageIntent)
+                        Toast.makeText(context, "전송하였습니다", Toast.LENGTH_SHORT).show()
 
-                    GlobalApplication.user.mytalent.add(GlobalApplication.selected_lecture)
+                        GlobalApplication.user.mytalent.add(GlobalApplication.selected_lecture)
 
-                    var database = FirebaseDatabase.getInstance()
-                    var myRef = database.getReference("Users")
-                    myRef.child(GlobalApplication.user.id).setValue(GlobalApplication.user)
+                        var database = FirebaseDatabase.getInstance()
+                        var myRef = database.getReference("Users")
+                        myRef.child(GlobalApplication.user.id).setValue(GlobalApplication.user)
 
-                }).setNegativeButton("취소", DialogInterface.OnClickListener { dialog, which ->
-                    Toast.makeText(context, "취소하였습니다", Toast.LENGTH_SHORT).show()
-                }).show()
+                    }).setNegativeButton("취소", DialogInterface.OnClickListener { dialog, which ->
+                        Toast.makeText(context, "취소하였습니다", Toast.LENGTH_SHORT).show()
+                    }).show()
 
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -156,22 +191,24 @@ class TalentReadFragment : Fragment(), OnMapReadyCallback {
         }
 
         talentread_cancel.setOnClickListener {
-            var fragmentManager = fragmentManager
-            var fragmentTransaction = fragmentManager!!.beginTransaction()
-            GlobalApplication.actionbar.customView.title.text = "홈"
-            fragmentTransaction.addToBackStack(null)
-            fragmentTransaction.replace(R.id.fragment, MainFragment())
-            fragmentTransaction.commit()
+//            var fragmentManager = fragmentManager
+//            var fragmentTransaction = fragmentManager!!.beginTransaction()
+//            GlobalApplication.actionbar.customView.title.text = "홈"
+//            fragmentTransaction.addToBackStack(null)
+//            fragmentTransaction.replace(R.id.fragment, MainFragment())
+//            fragmentTransaction.commit()
+            GlobalApplication.navigation.selectedItemId = R.id.bottom_home
         }
 
-        if(GlobalApplication.selected_lecture.category == "0")
+        if (GlobalApplication.selected_lecture.category == "0")
             talentread_category.text = "카테고리 : 취미활동"
-        else if(GlobalApplication.selected_lecture.category == "1")
+        else if (GlobalApplication.selected_lecture.category == "1")
             talentread_category.text = "카테고리 : 건강 및 운동"
-        else if(GlobalApplication.selected_lecture.category == "2")
+        else if (GlobalApplication.selected_lecture.category == "2")
             talentread_category.text = "카테고리 : 교육"
 
-        talentread_duedate.text = "신청마감일자 : " + GlobalApplication.selected_lecture.dueyear + "년 " + (GlobalApplication.selected_lecture.duemonth.toInt() + 1) + "월 " + GlobalApplication.selected_lecture.dueday + "일"
+        talentread_duedate.text =
+            "신청마감일자 : " + GlobalApplication.selected_lecture.dueyear + "년 " + (GlobalApplication.selected_lecture.duemonth.toInt() + 1) + "월 " + GlobalApplication.selected_lecture.dueday + "일"
 
         talentread_img.setImageBitmap(GlobalApplication.String_to_Bitmap(GlobalApplication.selected_lecture.image))
 
@@ -207,8 +244,10 @@ class TalentReadFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googlemap: GoogleMap?) {
         var mMap = googlemap
 
-        var point = LatLng(GlobalApplication.selected_lecture.latitude.toDouble()
-            , GlobalApplication.selected_lecture.longitude.toDouble())
+        var point = LatLng(
+            GlobalApplication.selected_lecture.latitude.toDouble()
+            , GlobalApplication.selected_lecture.longitude.toDouble()
+        )
         var mOptions = MarkerOptions()
         mOptions.title("교육 장소")
         mOptions.snippet(GlobalApplication.selected_lecture.addresstext)
@@ -216,8 +255,10 @@ class TalentReadFragment : Fragment(), OnMapReadyCallback {
         // 마커 추가
         mMap?.addMarker(mOptions)
 
-        var point1 = LatLng(GlobalApplication.user.latitude.toDouble()
-            , GlobalApplication.user.longitude.toDouble())
+        var point1 = LatLng(
+            GlobalApplication.user.latitude.toDouble()
+            , GlobalApplication.user.longitude.toDouble()
+        )
         var mOptions1 = MarkerOptions()
         mOptions1.title("내가 등록한 위치")
         mOptions1.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))

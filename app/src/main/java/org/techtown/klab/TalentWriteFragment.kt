@@ -35,9 +35,11 @@ import kotlinx.android.synthetic.*
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.custom_bar.view.*
+import kotlinx.android.synthetic.main.fragment_talent_read.*
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.lang.Exception
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -204,6 +206,14 @@ class TalentWriteFragment : Fragment(), OnMapReadyCallback {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        val now = System.currentTimeMillis()
+        val date = Date(now)
+        val sdf = SimpleDateFormat("yyyy.MM.dd")
+        var getTime = sdf.format(date)
+        var year = getTime.split(".")[0]
+        var month = getTime.split(".")[1]
+        var day = getTime.split(".")[2]
+
         var mapFragment = childFragmentManager.findFragmentById(org.techtown.klab.R.id.talentwrite_map) as SupportMapFragment
         mapFragment?.getMapAsync(this)
 
@@ -250,7 +260,16 @@ class TalentWriteFragment : Fragment(), OnMapReadyCallback {
             if(talentwrite_title.text.toString() == "" || talentwrite_people.selectedItemPosition == 0 || address == "" || mYear == -1){
                 builder.setTitle("실패").setMessage("제목, 인원, 주소, 마감일자는 필수항목입니다.").setPositiveButton("확인") { dialog, which -> }
             }
-            else {
+            else if (mYear == year.toInt() && mMonth == month.toInt() - 1 && mDay < day.toInt()) {
+                builder.setTitle("실패").setMessage("오늘 일자 이후로 강의 등록이 가능합니다.").setPositiveButton("확인") { dialog, which -> }
+            }
+            else if (mYear == year.toInt() && (mMonth < (month.toInt() - 1))) {
+                builder.setTitle("실패").setMessage("오늘 일자 이후로 강의 등록이 가능합니다.").setPositiveButton("확인") { dialog, which -> }
+            }
+            else if (mYear < year.toInt()) {
+                builder.setTitle("실패").setMessage("오늘 일자 이후로 강의 등록이 가능합니다.").setPositiveButton("확인") { dialog, which -> }
+            }
+            else{
                 builder.setTitle("성공").setMessage("재능 등록이 완료되었습니다.").setPositiveButton("확인") { dialog, which -> }
 
                 var img = (talentwrite_img.drawable as BitmapDrawable).bitmap

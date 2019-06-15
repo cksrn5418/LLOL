@@ -23,8 +23,6 @@ import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionListener, TalentWriteFragment.OnFragmentInteractionListener, TalentReadFragment.OnFragmentInteractionListener, TalentFragment.OnFragmentInteractionListener, FreeFragment.OnFragmentInteractionListener, FreeWriteFragment.OnFragmentInteractionListener, FreeReadFragment.OnFragmentInteractionListener, MypageFragment.OnFragmentInteractionListener {
 
-    lateinit var builder:AlertDialog.Builder
-
     override fun onFragmentInteraction(uri: Uri) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -45,6 +43,7 @@ class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        GlobalApplication.navigation = navigation
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         Init()
         dialog()
@@ -54,25 +53,25 @@ class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionList
         when (item.itemId) {
             R.id.bottom_home -> {
                 GlobalApplication.actionbar.customView.title.text = "홈"
-                builder.setMessage("추천 재능 목록이 나옵니다!!")
+                GlobalApplication.builder.setMessage("추천 재능 목록이 나옵니다.\n\n오른쪽 버튼을 통해 강의를 거리순, 인기순으로 확인할 수 있습니다.\n\n오른쪽 아래 펜모양 버튼을 누르면 재능 등록이 가능합니다.")
                 main_write.show()
                 replaceFragment(MainFragment())
             }
             R.id.bottom_list -> {
                 GlobalApplication.actionbar.customView.title.text = "재능목록"
-                builder.setMessage("검색 옵션에 맞는 재능 목록이 나옵니다!!")
+                GlobalApplication.builder.setMessage("위 검색창을 통해 재능을 검색할 수 있습니다.\n\n카테고리별로 강의를 확인할 수 있습니다.")
                 main_write.hide()
                 replaceFragment(TalentFragment())
             }
             R.id.bottom_free -> {
                 GlobalApplication.actionbar.customView.title.text = "게시판"
-                builder.setMessage("다른 사용자들과 자유롭게 이야기할 수 있습니다!!")
+                GlobalApplication.builder.setMessage("다른 사용자들과 자유롭게 이야기할 수 있습니다.")
                 main_write.hide()
                 replaceFragment(FreeFragment())
             }
             R.id.bottom_my -> {
                 GlobalApplication.actionbar.customView.title.text = "마이페이지"
-                builder.setMessage("내 정보와 수강중인 재능 및 재능기부 목록 등을 볼 수 있습니다!!")
+                GlobalApplication.builder.setMessage("내 정보 확인 및 수정이 가능하고 수강중인 재능 및 재능기부 목록을 볼 수 있습니다.")
                 main_write.hide()
                 replaceFragment(MypageFragment())
             }
@@ -96,15 +95,15 @@ class MainActivity : AppCompatActivity(), MainFragment.OnFragmentInteractionList
         transaction.add(R.id.fragment, MainFragment())
         transaction.commit()
         GlobalApplication.actionbar.customView.findViewById<Button>(R.id.question).setOnClickListener {
-            builder.show()
+            GlobalApplication.builder.show()
         }
     }
 
     fun dialog(){
-        builder = AlertDialog.Builder(this)
-        builder.setTitle("도움말")
-        builder.setMessage("추천 재능 목록이 나옵니다!!")
-        builder.setPositiveButton("확인") { dialog, which ->
+        GlobalApplication.builder = AlertDialog.Builder(this)
+        GlobalApplication.builder.setTitle("도움말")
+        GlobalApplication.builder.setMessage("추천 재능 목록이 나옵니다.\n\n오른쪽 버튼을 통해 강의를 거리순, 인기순으로 확인할 수 있습니다.\n\n오른쪽 아래 펜모양 버튼을 누르면 재능 등록이 가능합니다.")
+        GlobalApplication.builder.setPositiveButton("확인") { dialog, which ->
         }
     }
 }

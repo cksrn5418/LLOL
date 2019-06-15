@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.fragment_main.*
 import android.widget.BaseAdapter
+import android.widget.Button
 import kotlin.math.sqrt
 
 
@@ -102,7 +103,7 @@ class MainFragment : Fragment() {
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if(position == 0){
-                    GlobalApplication.recommend_list.sortBy {
+                    GlobalApplication.recommend_list.sortByDescending {
                         it.count.toInt()
                     }
                     var adapter = MyTalentAdapter(context!!, R.layout.talent_row, GlobalApplication.recommend_list)

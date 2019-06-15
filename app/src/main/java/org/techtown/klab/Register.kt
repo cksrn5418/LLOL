@@ -33,6 +33,14 @@ class Register : AppCompatActivity(), OnMapReadyCallback {
     }
 
     fun Init(){
+
+        val i = intent
+        var flag = i.getBooleanExtra("register", true)
+
+        if(!flag){
+            register_btn.text = "수정"
+        }
+
         var age = ArrayList<String>()
         for(i in 1..100)
             age.add(i.toString())
@@ -74,22 +82,42 @@ class Register : AppCompatActivity(), OnMapReadyCallback {
                         dialog.dismiss()
                     }
             }else{
-                builder.setTitle("회원가입 성공").setMessage("회원가입에 성공하였습니다! 메인 화면으로 이동합니다!")
-                    .setPositiveButton("확인") { dialog, which ->
-                        dialog.dismiss()
+                if(flag) {
+                    builder.setTitle("회원가입 성공").setMessage("회원가입에 성공하였습니다! 메인 화면으로 이동합니다!")
+                        .setPositiveButton("확인") { dialog, which ->
+                            dialog.dismiss()
 
-                        GlobalApplication.user.phonenum = register_phonenum.text.toString()
-                        GlobalApplication.user.age = register_agespinner.selectedItem.toString()
-                        GlobalApplication.user.latitude = latitude
-                        GlobalApplication.user.longitude = longitude
+                            GlobalApplication.user.phonenum = register_phonenum.text.toString()
+                            GlobalApplication.user.age = register_agespinner.selectedItem.toString()
+                            GlobalApplication.user.latitude = latitude
+                            GlobalApplication.user.longitude = longitude
 
-                        var database = FirebaseDatabase.getInstance()
-                        var myRef = database.getReference("Users")
-                        myRef.child(GlobalApplication.user.id).setValue(GlobalApplication.user)
+                            var database = FirebaseDatabase.getInstance()
+                            var myRef = database.getReference("Users")
+                            myRef.child(GlobalApplication.user.id).setValue(GlobalApplication.user)
 
-                        val nextIntent = Intent(this, MainActivity::class.java)
-                        startActivity(nextIntent)
-                    }
+                            val nextIntent = Intent(this, MainActivity::class.java)
+                            startActivity(nextIntent)
+                        }
+                }
+                else{
+                    builder.setTitle("수정 완료").setMessage("회원정보 수정 성공하였습니다! 메인 화면으로 이동합니다!")
+                        .setPositiveButton("확인") { dialog, which ->
+                            dialog.dismiss()
+
+                            GlobalApplication.user.phonenum = register_phonenum.text.toString()
+                            GlobalApplication.user.age = register_agespinner.selectedItem.toString()
+                            GlobalApplication.user.latitude = latitude
+                            GlobalApplication.user.longitude = longitude
+
+                            var database = FirebaseDatabase.getInstance()
+                            var myRef = database.getReference("Users")
+                            myRef.child(GlobalApplication.user.id).setValue(GlobalApplication.user)
+
+                            val nextIntent = Intent(this, MainActivity::class.java)
+                            startActivity(nextIntent)
+                        }
+                }
             }
             builder.show()
         }

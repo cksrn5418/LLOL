@@ -79,6 +79,7 @@ class MypageFragment : Fragment() {
 
         mypage_userbtn.setOnClickListener {
             val nextIntent = Intent(context, Register::class.java)
+            nextIntent.putExtra("register", false)
             startActivity(nextIntent)
         }
 

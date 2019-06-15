@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.ActionBar
+import android.support.v7.app.AlertDialog
 import android.widget.ArrayAdapter
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -22,6 +24,7 @@ import kotlinx.android.synthetic.main.fragment_main.*
 class GlobalApplication : Application() {
 
     companion object {
+        lateinit var builder: AlertDialog.Builder
         var instance: GlobalApplication? = null
         var hobby_list:ArrayList<MyTalent> = ArrayList()
         var health_list:ArrayList<MyTalent> = ArrayList()
@@ -33,6 +36,7 @@ class GlobalApplication : Application() {
         var user:User = User()
         var selected_lecture = MyTalent()
         lateinit var actionbar: ActionBar
+        lateinit var navigation : BottomNavigationView
 
         @SuppressLint("NewApi")
         fun Bitmap_to_String(img: Bitmap) : String{
